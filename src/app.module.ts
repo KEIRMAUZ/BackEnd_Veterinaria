@@ -7,19 +7,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { MascotasModule } from './mascotas/mascotas.module';
 import { ServiciosModule } from './servicios/servicios.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [
+  imports:[
     AuthModule, ClientesModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: 'mysql.railway.internal',
       port: 3306,
+      
       username: 'root',
-      password: '',
-      database: 'veterinaria',
+      password: 'bmEbAkKucMVpQBFyQaTfUkASHqosPIev',
+      database: 'railway',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
+      
     }),
     UsersModule,
     MascotasModule,
