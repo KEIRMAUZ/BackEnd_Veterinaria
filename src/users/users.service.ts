@@ -35,13 +35,11 @@ export class UsersService {
             }
         })
 
-        
-
         if(user){
             throw new HttpException("El usuario ya existe en la base de datos", HttpStatus.CONFLICT)
         }
 
-        const passwordHash = await bcrypt.hash(password, 10);
+        const passwordHash = await bcrypt.hash(password, await bcrypt.genSalt());
 
         const newUser = this.userRepository.create({
             name, password:passwordHash

@@ -12,18 +12,18 @@ export class UserSeederService {
       const adminUser = await this.userService.buscarUsuario('Admin');
 
       if (!adminUser) {
-        const hashedPassword = await bcrypt.hash('admin', 10);
-        const newUser: createUserDto = { name: 'Admin', password: hashedPassword };
+        
+        const newUser: createUserDto = { name: 'Admin', password: 'admin' };
         await this.userService.createUser(newUser);
-        console.log('Admin user created!');
+        console.log('Usuario Admin creado!');
       } else {
         console.log('Admin ya existe.');
+
       }
     } catch (error) {
       if (error.status === HttpStatus.NOT_FOUND) {
         console.log('User not found. Creating admin user...');
-        const hashedPassword = await bcrypt.hash('admin', 10);
-        const newUser: createUserDto = { name: 'Admin', password: hashedPassword };
+        const newUser: createUserDto = { name: 'Admin', password: 'admin' };
         await this.userService.createUser(newUser);
         console.log('Usuario Admin creado por defecto!');
       } else {
