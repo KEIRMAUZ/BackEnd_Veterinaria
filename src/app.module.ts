@@ -18,7 +18,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       port: 3306,
       
       username: 'root',
-      password: 'd83b80f2-1543-45f8-abac-0db4b66f3ce2',
+      password: 'YbojKILVMRRKVTwEpjgmyfBqWGfbZELU',
       database: 'railway',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
