@@ -14,15 +14,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     AuthModule, ClientesModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'mysql.railway.internal',
-      port: 3306,
-      
-      username: 'root',
-      password: 'IPwuqLOXxlLIhLXZbigxCYqjhekxHXou',
-      database: 'railway',
+      url: 'mysql://root:IPwuqLOXxlLIhLXZbigxCYqjhekxHXou@autorack.proxy.rlwy.net:12671/railway',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
-      
     }),
     UsersModule,
     MascotasModule,
