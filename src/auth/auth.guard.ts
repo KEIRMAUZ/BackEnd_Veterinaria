@@ -10,41 +10,54 @@ import { IS_PUBLIC_KEY } from './constantes/decoradorPublic';
     export class AuthGuard implements CanActivate {
         constructor(private jwtService: JwtService, private reflector:Reflector) {}
     
-            async canActivate(context: ExecutionContext): Promise<boolean> {
-                const isPublic = this.reflector.getAllAndOverride<boolean>('isPublic', [
+        async canActivate(context: ExecutionContext): Promise<boolean> {
+            
+            const isPublic = this.reflector.getAllAndOverride<boolean>('isPublic', [
                 context.getHandler(),
                 context.getClass(),
-                ]);
-                if (isPublic) {
+            ]);
+        
+            if (isPublic) {
                 return true;
-                }
-            
-                const request = context.switchToHttp().getRequest();
-                const token = this.extractTokenFromRequest(request);
-            
-                if (!token) {
+            }
+        
+            const request = context.switchToHttp().getRequest();
+            const token = this.extractTokenFromRequest(request);
+        
+            if (!token) {
                 throw new UnauthorizedException('Token not found');
-                }
-            
-                try {
+            }
+        
+            try {
+                
                 const payload = await this.jwtService.verifyAsync(token, {
                     secret: jwtConstants.secret,
                 });
-                request['user'] = payload;
-                } catch {
-                throw new UnauthorizedException('Invalid token');
-                }
-            
-                return true;
-            }
-            
-            private extractTokenFromRequest(request: Request): string | undefined {
+        
                 
-                const tokenFromCookie = request.cookies['auth_token'];
-                if (tokenFromCookie) {
-                return tokenFromCookie;
-                }
-                const [type, token] = request.headers.authorization?.split(' ') ?? [];
-                return type === 'Bearer' ? token : undefined;
+                request['user'] = payload;
+            } catch (error) {
+                
+                console.error('Error al verificar el token:', error);
+                throw new UnauthorizedException('Invalid token');
             }
+        
+            return true;
+        }
+        
+        private extractTokenFromRequest(request: Request): string | undefined {
+            
+            if (request.cookies && request.cookies['auth_token']) {
+                return request.cookies['auth_token'];
+            }
+            const authorizationHeader = request.headers.authorization;
+        
+            if (!authorizationHeader) {
+                return undefined;
+            }
+        
+            const [type, token] = authorizationHeader.split(' ');
+        
+            return type === 'Bearer' ? token : undefined;
+        }
     }
