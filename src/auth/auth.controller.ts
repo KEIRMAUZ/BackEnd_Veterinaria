@@ -18,7 +18,7 @@ export class AuthController {
         res.cookie('auth_token', access_token, {
             httpOnly: true, 
             maxAge: 3600000, 
-            sameSite: 'lax', 
+            sameSite: 'none', 
             secure: true,
         });
         return res.status(HttpStatus.OK).json({ message: 'Inicio de sesión exitoso' });
