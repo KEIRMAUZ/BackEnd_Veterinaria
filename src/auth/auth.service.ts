@@ -7,17 +7,18 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
     constructor ( private userService:UsersService, private jwtService: JwtService){}
 
-    async signIn(name: string, password: string):Promise<{ access_token: string }> {
+    async signIn(name: string, password: string): Promise<{ access_token: string }> {
         const user = await this.userService.buscarUsuario(name);
-        
-        console.log(user.password)
-        console.log(password)
-        if (!user ||  await bcrypt.compare(password, user.password )) {
+    
+        if (!user || !(await bcrypt.compare(password, user.password))) {
             throw new UnauthorizedException();
         }
+    
         const payload = { sub: user.id_user, username: user.name };
+    
         return {
             access_token: await this.jwtService.signAsync(payload),
-            };
-        }
+        };
+
+    }
 }

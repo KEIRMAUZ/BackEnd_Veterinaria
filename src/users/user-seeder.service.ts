@@ -13,7 +13,7 @@ export class UserSeederService {
 
       if (!adminUser) {
         
-        const newUser: createUserDto = { name: 'Admin', password: 'admin' };
+        const newUser: createUserDto = { name: 'Admin', password: 'Admin' };
         await this.userService.createUser(newUser);
         console.log('Usuario Admin creado!');
       } else {
@@ -23,7 +23,7 @@ export class UserSeederService {
     } catch (error) {
       if (error.status === HttpStatus.NOT_FOUND) {
         console.log('User not found. Creating admin user...');
-        const newUser: createUserDto = { name: 'Admin', password: 'admin' };
+        const newUser: createUserDto = { name: 'Admin', password: 'Admin' };
         await this.userService.createUser(newUser);
         console.log('Usuario Admin creado por defecto!');
       } else {
