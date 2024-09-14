@@ -46,19 +46,23 @@ import { IS_PUBLIC_KEY } from './constantes/decoradorPublic';
         }
         
         private extractTokenFromRequest(request: Request): string | undefined {
-            console.log('Cookies en la solicitud:', request.cookies);
-            if (request.cookies && request.cookies['auth_token']) {
-                console.log('Token encontrado en cookies');
-                return request.cookies['auth_token'];
+            console.log('Headers de la solicitud:', request.headers);
+        
+            // Obtener el encabezado de cookies
+            const cookieHeader = request.headers.cookie;
+            if (cookieHeader) {
+                console.log('Encabezado de cookies:', cookieHeader);
+                // Buscar el token en el encabezado de cookies
+                const match = cookieHeader.match(/auth_token=([^;]+)/);
+                if (match) {
+                    console.log('Token encontrado en cookies');
+                    return match[1];
+                }
             }
-            
-            const authorizationHeader = request.headers.authorization;
-            if (!authorizationHeader) {
-                console.log('No se encontró header de autorización');
-                return undefined;
-            }
-            
-            const [type, token] = authorizationHeader.split(' ');
-            return type === 'Bearer' ? token : undefined;
+        
+            console.log('No se encontró el token en las cookies');
+            return undefined;
         }
+        
+        
     }

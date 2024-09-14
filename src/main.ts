@@ -7,9 +7,15 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(3200);
   app.use(cookieParser());
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
 
   const userSeeder = app.get(UserSeederService);
-  await userSeeder.run();
+  await userSeeder.run()
 
 }
 bootstrap();
