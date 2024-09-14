@@ -20,7 +20,7 @@ export class AuthController {
             maxAge: 3600000, 
             sameSite: 'strict', 
         });
-        return res.status(HttpStatus.OK).json({ message: 'Login successful' });
+        return res.status(HttpStatus.OK).json({ message: 'Inicio de sesión exitoso' });
     }
 
     @UseGuards(AuthGuard)
