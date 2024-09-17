@@ -4,10 +4,11 @@ import { MascotasService } from './mascotas.service';
 import { Mascotas } from './mascotas.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientesModule } from 'src/clientes/clientes.module';
+import { Servicios } from 'src/servicios/servicios.entity';
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([Mascotas]),ClientesModule
+    TypeOrmModule.forFeature([Mascotas, Servicios]),ClientesModule
   ],
   controllers: [MascotasController],
   providers: [MascotasService]

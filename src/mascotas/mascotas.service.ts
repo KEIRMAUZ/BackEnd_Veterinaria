@@ -11,7 +11,7 @@ export class MascotasService {
 
     async optenerMascotas(){
         return this.mascotaRepository.find({
-            relations:['cliente']
+            relations:['cliente', 'servicios']
         })
     }
 

@@ -1,5 +1,6 @@
 import { Clientes } from "src/clientes/clientes.entity";
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Servicios } from "src/servicios/servicios.entity";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne } from "typeorm";
 
 @Entity()
 export class Mascotas{
@@ -25,5 +26,8 @@ export class Mascotas{
     @ManyToOne(()=> Clientes, (cliente) => cliente.mascotas)
     @JoinColumn({name:'id_cliente'})
     cliente:Clientes
+
+    @OneToOne(()=>Servicios, (servicios)=>servicios.mascotas)
+    servicios:Servicios
     
 }

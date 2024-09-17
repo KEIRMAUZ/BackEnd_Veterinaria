@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { Mascotas } from "src/mascotas/mascotas.entity";
+import { Clientes } from "src/clientes/clientes.entity";
 
 @Entity()
 export class Servicios {
@@ -18,7 +20,15 @@ export class Servicios {
     @Column()
     costo:number
 
-    @Column()
+    @Column({default: () => 'CURRENT_TIMESTAMP' })
     fecha:Date
+
+    @OneToOne( ()=> Mascotas, (mascotas => mascotas.servicios))
+    @JoinColumn({name:'id_mascota'})
+    mascotas:Mascotas
+
+    @OneToOne( ()=> Clientes, (cliente => cliente.servicios))
+    @JoinColumn({name:'id_cliente'})
+    cliente:Clientes
 
 }
