@@ -1,16 +1,18 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Mascota } from './mascotas.entity';
+import { Mascotas } from './mascotas.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createMascotaDto } from './Dto/crearMascota.dto';
 import { updateMascotaDto } from './Dto/updateMascota.dto'; 
 
 @Injectable()
 export class MascotasService {
-    constructor(@InjectRepository(Mascota) private mascotaRepository:Repository<Mascota>){}
+    constructor(@InjectRepository(Mascotas) private mascotaRepository:Repository<Mascotas>){}
 
     async optenerMascotas(){
-        return this.mascotaRepository.find()
+        return this.mascotaRepository.find({
+            relations:['cliente']
+        })
     }
 
     async optenerMascota(nombre:string){

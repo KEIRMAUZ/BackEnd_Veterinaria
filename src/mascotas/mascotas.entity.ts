@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Clientes } from "src/clientes/clientes.entity";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
 
 @Entity()
-export class Mascota{
+export class Mascotas{
     @PrimaryGeneratedColumn()
     id_mascota:number
 
@@ -20,7 +21,9 @@ export class Mascota{
     @Column()
     imagen:string
 
-    @Column()
-    id_cliente:number
+
+    @ManyToOne(()=> Clientes, (cliente) => cliente.mascotas)
+    @JoinColumn({name:'id_cliente'})
+    cliente:Clientes
     
 }
