@@ -21,7 +21,7 @@ export class ServiciosService {
 
     async buscarServicios(){
         return this.servicioRepository.find({
-            relations:['mascotas', 'cliente']
+            relations:['mascota', 'cliente']
         })
     }
 

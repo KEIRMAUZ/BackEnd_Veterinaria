@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Delete,Param, Put, Body, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Delete,Param, Put, Body, ParseIntPipe,UseInterceptors, UploadedFile,HttpException, HttpStatus } from '@nestjs/common';
 import { MascotasService } from './mascotas.service';
 import { createMascotaDto } from './Dto/crearMascota.dto';
 import { updateMascotaDto } from './Dto/updateMascota.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('mascotas')
 export class MascotasController {
@@ -15,11 +16,29 @@ export class MascotasController {
     @Get(':name')
     async optenerMascita(@Param('name') name:string){
         return this.mascotaService.optenerMascota(name)
-    }
+    } 
 
     @Post()
-    async crearRegistro(@Body() createMascota:createMascotaDto){
-        return this.mascotaService.crearMascota(createMascota)
+    @UseInterceptors(FileInterceptor('imagen')) 
+    async crearRegistro(
+        @Body() createMascota: createMascotaDto, 
+        @UploadedFile() imagen: Express.Multer.File 
+    ) {
+        console.log('Datos recibidos:', createMascota);
+        console.log('Archivo recibido:', imagen);
+
+        if (imagen) {
+            createMascota.imagen = `imagenes/${imagen.filename}`;
+        }
+
+        try {
+            const mascotaCreada = await this.mascotaService.crearMascota(createMascota);
+            console.log('Mascota creada:', mascotaCreada);
+            return mascotaCreada;
+        } catch (error) {
+            console.error('Error al crear la mascota:', error);
+            throw new HttpException('Error al crear la mascota', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Delete(':id_mascota')

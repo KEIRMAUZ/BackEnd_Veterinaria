@@ -1,6 +1,6 @@
 import { Clientes } from "src/clientes/clientes.entity";
 import { Servicios } from "src/servicios/servicios.entity";
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne, OneToMany } from "typeorm";
 
 @Entity()
 export class Mascotas{
@@ -22,12 +22,14 @@ export class Mascotas{
     @Column()
     imagen:string
 
+    @Column()
+    id_cliente:number
 
-    @ManyToOne(()=> Clientes, (cliente) => cliente.mascotas)
-    @JoinColumn({name:'id_cliente'})
-    cliente:Clientes
+    @ManyToOne(() => Clientes, (cliente) => cliente.mascota)
+    @JoinColumn({ name: 'id_cliente' })
+    cliente: Clientes;
 
-    @OneToOne(()=>Servicios, (servicios)=>servicios.mascotas)
-    servicios:Servicios
+    @OneToMany(() => Servicios, (servicio) => servicio.mascota)
+    servicio: Servicios[];
     
 }

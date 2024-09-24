@@ -4,14 +4,20 @@ import { Mascotas } from './mascotas.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createMascotaDto } from './Dto/crearMascota.dto';
 import { updateMascotaDto } from './Dto/updateMascota.dto'; 
+import { Express } from 'express';
+import { join } from 'path'; // Para manejar rutas de archivos
+import * as fs from 'fs';
+import FormData from 'form-data'; // Para el manejo del form-data
+import { lastValueFrom } from 'rxjs';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class MascotasService {
-    constructor(@InjectRepository(Mascotas) private mascotaRepository:Repository<Mascotas>){}
+    constructor(@InjectRepository(Mascotas) private mascotaRepository:Repository<Mascotas>, private readonly httpService: HttpService){}
 
     async optenerMascotas(){
         return this.mascotaRepository.find({
-            relations:['cliente', 'servicios']
+            relations:['cliente', 'servicio']
         })
     }
 
@@ -31,6 +37,9 @@ export class MascotasService {
     }
 
     async crearMascota(mascota:createMascotaDto){
+
+        console.log('Datos de la mascota antes de guardarse:', mascota);
+
         const newMascota = this.mascotaRepository.create(mascota)
         return this.mascotaRepository.save(newMascota)
     }
@@ -51,7 +60,6 @@ export class MascotasService {
 
     }
 
-
     async deleteMascota(id_mascota:number){
         const mascota = await this.mascotaRepository.findOne({
             where:{
@@ -65,4 +73,6 @@ export class MascotasService {
 
         return this.mascotaRepository.delete(id_mascota)
     }
+
+    
 }

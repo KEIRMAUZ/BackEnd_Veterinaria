@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { Mascotas } from "src/mascotas/mascotas.entity";
 import { Clientes } from "src/clientes/clientes.entity";
 
@@ -9,10 +9,10 @@ export class Servicios {
     id_servicio:number
 
     @Column()
-    id_cliente:number
+    id_mascota:number
 
     @Column()
-    id_mascota:number
+    id_cliente:number
 
     @Column()
     descripcion:string
@@ -20,15 +20,15 @@ export class Servicios {
     @Column()
     costo:number
 
-    @Column({default: () => 'CURRENT_TIMESTAMP' })
+    @Column({type:'datetime', default: () => 'CURRENT_TIMESTAMP' })
     fecha:Date
 
-    @OneToOne( ()=> Mascotas, (mascotas => mascotas.servicios))
-    @JoinColumn({name:'id_mascota'})
-    mascotas:Mascotas
+    @ManyToOne(() => Mascotas, (mascota) => mascota.servicio)
+    @JoinColumn({ name: 'id_mascota' })
+    mascota: Mascotas;
 
-    @OneToOne( ()=> Clientes, (cliente => cliente.servicios))
-    @JoinColumn({name:'id_cliente'})
-    cliente:Clientes
+    @ManyToOne(() => Clientes, (cliente) => cliente.servicio)
+    @JoinColumn({ name: 'id_cliente' })
+    cliente: Clientes;
 
 }

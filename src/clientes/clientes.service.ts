@@ -10,7 +10,10 @@ export class ClientesService {
     constructor(@InjectRepository(Clientes) private clienteRepository: Repository<Clientes>){}
 
     async buscarClientes(){
-        return this.clienteRepository.find()
+        return this.clienteRepository.find({
+            
+            relations:['mascota']
+        })
     }
 
     async buscarCliente( nombre:string){
@@ -19,7 +22,7 @@ export class ClientesService {
             where:{
                 nombre
             },
-            relations:['mascotas']
+            relations:['mascota']
         })
 
         if(!cliente){
