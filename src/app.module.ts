@@ -14,7 +14,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     AuthModule, ClientesModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      url: 'mysql://root:IPwuqLOXxlLIhLXZbigxCYqjhekxHXou@autorack.proxy.rlwy.net:12671/railway',
+      url: 'mysql://root:QwSkEXVvqWmBmBKFeiWBDgHMcuNtmdRi@autorack.proxy.rlwy.net:54048/railway',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
