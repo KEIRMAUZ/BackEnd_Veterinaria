@@ -6,16 +6,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Clientes } from 'src/clientes/clientes.entity';
 import { HttpModule } from '@nestjs/axios';
 import { MulterModule } from '@nestjs/platform-express';
-import * as Multer from 'multer';
+import * as multer from 'multer';
 import { join } from 'path';
 
 @Module({
   imports:[
     TypeOrmModule.forFeature([Mascotas, Clientes]),HttpModule,
     MulterModule.register({
-      storage: Multer.diskStorage({
-        destination:(req,file,cb) => {
-          const dir = join(__dirname, '..', 'imagenes')
+      storage: multer.diskStorage({
+        destination: (req,file,cb) => {
+          cb(null, 'src/public/imagenes')
         },
         filename:(req,file,cb)=>{
           cb(null, file.originalname)

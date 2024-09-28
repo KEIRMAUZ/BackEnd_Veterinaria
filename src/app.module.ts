@@ -20,7 +20,7 @@ import { join } from 'path';
       synchronize: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..','imagenes')
+      rootPath: join(__dirname, '..','public')
     }),
     UsersModule,
     MascotasModule,

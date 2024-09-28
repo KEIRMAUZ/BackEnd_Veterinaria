@@ -3,6 +3,6 @@ export class createMascotaDto{
     raza:string
     alergias:string
     enfermedades:string
-    imagen:string
+    imagen?:string
     id_cliente:number
 }
