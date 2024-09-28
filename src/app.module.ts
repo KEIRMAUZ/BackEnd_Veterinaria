@@ -15,7 +15,7 @@ import { join } from 'path';
     AuthModule, ClientesModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      url: 'mysql://root:QwSkEXVvqWmBmBKFeiWBDgHMcuNtmdRi@autorack.proxy.rlwy.net:54048/railway',
+      url: 'mysql://root:PpuDdWNdLzuGCeKwMYnnZaPCKTfNPXcv@junction.proxy.rlwy.net:16171/railway',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
