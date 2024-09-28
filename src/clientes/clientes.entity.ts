@@ -1,5 +1,5 @@
 import { Mascotas } from "src/mascotas/mascotas.entity";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Servicios } from "src/servicios/servicios.entity";
 
 @Entity()

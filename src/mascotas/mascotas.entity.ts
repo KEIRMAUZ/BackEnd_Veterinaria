@@ -1,6 +1,6 @@
 import { Clientes } from "src/clientes/clientes.entity";
 import { Servicios } from "src/servicios/servicios.entity";
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 
 @Entity()
 export class Mascotas{
