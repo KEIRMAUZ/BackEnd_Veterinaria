@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import { UploadApiResponse } from 'cloudinary';
+import { Resolver } from 'dns';
 
 
 @Injectable()
 export class CloudinaryService {
-    private storage: CloudinaryStorage;
     constructor() {
             
             cloudinary.config({
@@ -16,33 +15,31 @@ export class CloudinaryService {
             api_secret: "GQ9XjZDuCJTahMpZklqAPb1-NAI",
             });
         
-            
-            this.storage = new CloudinaryStorage({
-            cloudinary: cloudinary,
-            params: async (req, file) => {
-                return {
-                    folder: 'Veterinaria',  
-                    allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp'],  
-                    public_id: `${Date.now()}-${file.originalname}`, 
-                };
-            },
-            });
         }
 
 
         getMulterStorage() {
-            return multer({ storage: this.storage });
+            const storage = multer.memoryStorage();
+            return multer({ storage });
         }
 
         async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse> {
             return new Promise((resolve, reject) => {
-                cloudinary.uploader.upload_stream({ folder: 'Veterinaria' }, (error, result) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(result);
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        folder: 'Veterinaria',
+                        allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp'],
+                        public_id: `${Date.now()}-${file.originalname}`,
+                    },
+                    (error, result) => {
+                        if(error){
+                            reject(error);
+                        } else {
+                            resolve(result)
+                        }
                     }
-                }).end(file.buffer); 
+                );
+                uploadStream.end(file.buffer)
             });
         }
 }

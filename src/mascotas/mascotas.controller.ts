@@ -3,10 +3,11 @@ import { MascotasService } from './mascotas.service';
 import { createMascotaDto } from './Dto/crearMascota.dto';
 import { updateMascotaDto } from './Dto/updateMascota.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('mascotas')
 export class MascotasController {
-    constructor(private mascotaService:MascotasService){}
+    constructor(private mascotaService:MascotasService, private cloudinaryService: CloudinaryService){}
 
     @Get()
     async ooptenerMascotas(){
