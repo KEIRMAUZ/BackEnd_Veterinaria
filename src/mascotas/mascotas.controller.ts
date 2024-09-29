@@ -27,12 +27,8 @@ export class MascotasController {
         console.log('Datos recibidos:', createMascota);
         console.log('Archivo recibido:', imagen);
 
-        if (imagen) {
-            createMascota.imagen = `imagenes/${imagen.filename}`;
-        }
-
         try {
-            const mascotaCreada = await this.mascotaService.crearMascota(createMascota);
+            const mascotaCreada = await this.mascotaService.crearMascota(createMascota, imagen);
             console.log('Mascota creada:', mascotaCreada);
             return mascotaCreada;
         } catch (error) {
@@ -47,8 +43,10 @@ export class MascotasController {
     }
 
     @Put('actualizar/:id_mascota')
-    async actualizarMascota(@Param('id_mascota', ParseIntPipe) id_mascota:number ,@Body() updateMascota:updateMascotaDto){
+    async actualizarMascota(@Param('id_mascota', ParseIntPipe) id_mascota:number, @Body() updateMascota:updateMascotaDto){
         return this.mascotaService.updateMascota(id_mascota,updateMascota)
     }
 
 }
+
+

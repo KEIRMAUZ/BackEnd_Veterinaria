@@ -9,6 +9,7 @@ import { MascotasModule } from './mascotas/mascotas.module';
 import { ServiciosModule } from './servicios/servicios.module';
 import {ServeStaticModule} from '@nestjs/serve-static'
 import { join } from 'path';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports:[
@@ -25,6 +26,7 @@ import { join } from 'path';
     UsersModule,
     MascotasModule,
     ServiciosModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

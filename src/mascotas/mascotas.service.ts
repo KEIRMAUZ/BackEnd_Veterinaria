@@ -4,16 +4,13 @@ import { Mascotas } from './mascotas.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createMascotaDto } from './Dto/crearMascota.dto';
 import { updateMascotaDto } from './Dto/updateMascota.dto'; 
-import { Express } from 'express';
-import { join } from 'path'; // Para manejar rutas de archivos
-import * as fs from 'fs';
-import FormData from 'form-data'; // Para el manejo del form-data
-import { lastValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+
 
 @Injectable()
 export class MascotasService {
-    constructor(@InjectRepository(Mascotas) private mascotaRepository:Repository<Mascotas>, private readonly httpService: HttpService){}
+    constructor(@InjectRepository(Mascotas) private mascotaRepository:Repository<Mascotas>, private readonly cloudinaryService: CloudinaryService){}
 
     async optenerMascotas(){
         return this.mascotaRepository.find({
@@ -36,15 +33,26 @@ export class MascotasService {
 
     }
 
-    async crearMascota(mascota:createMascotaDto){
+    async crearMascota(mascota:createMascotaDto, file?: Express.Multer.File){
 
         console.log('Datos de la mascota antes de guardarse:', mascota);
+
+        if(file){
+            try{
+                const uploadResult = await this.cloudinaryService.uploadImage(file);
+                mascota.imagen = uploadResult.secure_url;
+            }
+            catch (error){
+                console.error("Error al subir la imagen al servicio de almacenamiento", error)
+                throw new HttpException("No se pudo subir la iamgen", HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+        }
 
         const newMascota = this.mascotaRepository.create(mascota)
         return this.mascotaRepository.save(newMascota)
     }
 
-    async updateMascota(id_mascota:number, mascota:updateMascotaDto){
+    async updateMascota(id_mascota:number, mascota:updateMascotaDto, file?: Express.Multer.File){
         const mascotaFound = await this.mascotaRepository.findOne({
             where:{
                 id_mascota
@@ -53,6 +61,14 @@ export class MascotasService {
 
         if(!mascotaFound){
             throw new HttpException("Mascota no encontrada", HttpStatus.NOT_FOUND)
+        }
+
+        if(file){
+            try{
+                const uploadResult = await this.cloudinaryService.uploadImage(file)
+            } catch(error){
+                throw new HttpException("No se pudo subir la imagen", HttpStatus.INTERNAL_SERVER_ERROR)
+            }
         }
 
         const updateMascota = Object.assign(mascotaFound,mascota)
