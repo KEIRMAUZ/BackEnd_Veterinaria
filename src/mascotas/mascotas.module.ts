@@ -8,10 +8,11 @@ import { HttpModule } from '@nestjs/axios';
 import { MulterModule } from '@nestjs/platform-express';
 import * as multer from 'multer';
 import { join } from 'path';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([Mascotas, Clientes]),HttpModule,
+    TypeOrmModule.forFeature([Mascotas, Clientes]),HttpModule,CloudinaryModule,
     MulterModule.register({
       storage: multer.diskStorage({
         destination: (req,file,cb) => {
