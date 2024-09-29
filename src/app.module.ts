@@ -20,9 +20,6 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..','public')
-    }),
     UsersModule,
     MascotasModule,
     ServiciosModule,

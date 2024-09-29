@@ -3,11 +3,10 @@ import { MascotasService } from './mascotas.service';
 import { createMascotaDto } from './Dto/crearMascota.dto';
 import { updateMascotaDto } from './Dto/updateMascota.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('mascotas')
 export class MascotasController {
-    constructor(private mascotaService:MascotasService, private cloudinaryService: CloudinaryService){}
+    constructor(private mascotaService:MascotasService){}
 
     @Get()
     async ooptenerMascotas(){
@@ -27,6 +26,8 @@ export class MascotasController {
     ) {
         console.log('Datos recibidos:', createMascota);
         console.log('Archivo recibido:', imagen);
+
+
 
         try {
             const mascotaCreada = await this.mascotaService.crearMascota(createMascota, imagen);

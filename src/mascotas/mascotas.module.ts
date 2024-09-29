@@ -13,16 +13,6 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 @Module({
   imports:[
     TypeOrmModule.forFeature([Mascotas, Clientes]),HttpModule,
-    MulterModule.register({
-      storage: multer.diskStorage({
-        destination: (req,file,cb) => {
-          cb(null, 'src/public/imagenes')
-        },
-        filename:(req,file,cb)=>{
-          cb(null, file.originalname)
-        }
-      }), 
-    }),
   ],
   controllers: [MascotasController],
   providers: [MascotasService, CloudinaryService]
