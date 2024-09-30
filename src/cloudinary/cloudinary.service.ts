@@ -1,48 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import { UploadApiResponse } from 'cloudinary';
 
-
 @Injectable()
-export class CloudinaryService {
-    private storage: CloudinaryStorage;
+    export class CloudinaryService {
     constructor() {
-            // Configura Cloudinary con tus credenciales
-            cloudinary.config({
-            cloud_name: "dmcxpeybj",
-            api_key: "285968531837913",
-            api_secret: "GQ9XjZDuCJTahMpZklqAPb1-NAI",
-            });
-        
-            
-            this.storage = new CloudinaryStorage({
-            cloudinary: cloudinary,
-            params: async (req, file) => {
-                return {
-                    folder: 'Veterinaria',  
-                    allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp'],  
-                    public_id: `${Date.now()}-${file.originalname}`, 
-                };
-            },
-            });
-        }
+        cloudinary.config({
+        cloud_name: 'dmcxpeybj',
+        api_key: '285968531837913',
+        api_secret: 'GQ9XjZDuCJTahMpZklqAPb1-NAI',
+        });
+    }
 
+    getMulterStorage() {
+        return multer.memoryStorage(); // Usar almacenamiento en memoria
+    }
 
-        getMulterStorage() {
-            return multer({ storage: this.storage });
-        }
+    async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse> {
+        return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream((error, result) => {
+            if (error) {
+            reject(error);
+            } else {
+            resolve(result);
+            }
+        });
 
-        async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse> {
-            return new Promise((resolve, reject) => {
-                cloudinary.uploader.upload_stream({ folder: 'Veterinaria' }, (error, result) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(result);
-                    }
-                }).end(file.buffer); 
-            });
-        }
+        // Enviar el archivo al stream de Cloudinary
+        uploadStream.end(file.buffer);
+        });
+    }
 }
