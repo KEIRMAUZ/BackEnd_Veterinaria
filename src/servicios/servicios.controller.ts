@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Delete, Put, ParseIntPipe} from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Delete, Patch, ParseIntPipe} from '@nestjs/common';
 import { ServiciosService } from './servicios.service';
 import { createServicioDto } from './Dto/createServicio.dto';
 import { updateServicioDto } from './Dto/updateServicio.dto';
@@ -22,7 +22,7 @@ export class ServiciosController {
         return this.servicioService.createServicio(newServicio)
     }
 
-    @Put('actualizar/:id_servicio')
+    @Patch('actualizar/:id_servicio')
     async updateServicio(@Param('id_servicio', ParseIntPipe) id_servicio:number, @Body() updateServicio:updateServicioDto){
         return this.servicioService.updateServicio(id_servicio, updateServicio)
     }

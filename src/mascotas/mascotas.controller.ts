@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete,Param, Put, Body, ParseIntPipe,UseInterceptors, UploadedFile,HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Delete,Param, Patch, Body, ParseIntPipe,UseInterceptors, UploadedFile,HttpException, HttpStatus } from '@nestjs/common';
 import { MascotasService } from './mascotas.service';
 import { createMascotaDto } from './Dto/crearMascota.dto';
 import { updateMascotaDto } from './Dto/updateMascota.dto';
@@ -44,9 +44,15 @@ export class MascotasController {
         return this.mascotaService.deleteMascota(id_mascota)
     }
 
-    @Put('actualizar/:id_mascota')
-    async actualizarMascota(@Param('id_mascota', ParseIntPipe) id_mascota:number, @Body() updateMascota:updateMascotaDto){
-        return this.mascotaService.updateMascota(id_mascota,updateMascota)
+    @Patch('actualizar/:id_mascota')
+    @UseInterceptors(FileInterceptor('imagen')) 
+    async actualizarMascota(@Param('id_mascota', ParseIntPipe) id_mascota:number, @Body() updateMascota:updateMascotaDto, @UploadedFile() imagen?: Express.Multer.File ){
+        try{
+            const mascotaActualizada = await this.mascotaService.updateMascota(id_mascota,updateMascota, imagen);
+            return mascotaActualizada
+        } catch(error){
+            throw new HttpException('Error al actualizar la mascota', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
