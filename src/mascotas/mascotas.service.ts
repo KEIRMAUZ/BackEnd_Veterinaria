@@ -65,7 +65,8 @@ export class MascotasService {
 
         if(file){
             try{
-                const uploadResult = await this.cloudinaryService.uploadImage(file)
+                const uploadResult = await this.cloudinaryService.uploadImage(file);
+                mascota.imagen = uploadResult.secure_url;
             } catch(error){
                 throw new HttpException("No se pudo subir la imagen", HttpStatus.INTERNAL_SERVER_ERROR)
             }
