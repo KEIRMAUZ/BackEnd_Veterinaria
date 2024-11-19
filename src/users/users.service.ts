@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus,UnauthorizedException } from '@nestjs/common';
 import { User } from './users.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,10 +9,16 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
     constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
-    async buscarUsuario(name: string): Promise<User | null> {
-        return await this.userRepository.findOne({
+    async buscarUsuario(name: string): Promise<User> {
+        const user = await this.userRepository.findOne({
             where: { name },
         });
+    
+        if (!user) {
+            throw new UnauthorizedException("El usuario no existe");
+        }
+    
+        return user;
     }
 
     async buscarUsuarios() {

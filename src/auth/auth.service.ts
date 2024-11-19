@@ -10,13 +10,9 @@ export class AuthService {
     async signIn(name: string, password: string): Promise<{ access_token: string }> {
         const user = await this.userService.buscarUsuario(name);
     
-        if (!user) {
-            throw new UnauthorizedException("Credenciales inválidas. Verifica tu usuario");
-        }
-    
         const passwordValid = await bcrypt.compare(password, user.password);
         if (!passwordValid) {
-            throw new UnauthorizedException(`Credenciales inválidas. Verifica tu contraseña. Tu usuario es: ${user.name}`);
+            throw new UnauthorizedException("Credenciales inválidas. Verifica tu contraseña.");
         }
     
         const payload = { sub: user.id_user, username: user.name };
