@@ -7,37 +7,36 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-    constructor( @InjectRepository(User) private userRepository: Repository<User>){}
+    constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
-    async buscarUsuario(name: string) {
+    async buscarUsuario(name: string): Promise<User | null> {
         return await this.userRepository.findOne({
             where: { name },
         });
     }
-    
-    async buscarUsuarios(){
-        return this.userRepository.find()
+
+    async buscarUsuarios() {
+        return this.userRepository.find();
     }
 
-    async createUser(User:createUserDto){
-        const {name,password} =  User
+    async createUser(userDto: createUserDto) {
+        const { name, password } = userDto;
 
-        const user = await this.userRepository.findOne({
-            where:{
-                name
-            }
-        })
-
-        if(user){
-            throw new HttpException("El usuario ya existe en la base de datos", HttpStatus.CONFLICT)
+        const existingUser = await this.userRepository.findOne({
+            where: { name },
+        });
+        if (existingUser) {
+            throw new HttpException(
+                'El usuario ya existe en la base de datos',
+                HttpStatus.CONFLICT,
+            );
         }
-
-        const passwordHash = await bcrypt.hash(password, await bcrypt.genSalt());
+        const passwordHash = await bcrypt.hash(password, 10);
 
         const newUser = this.userRepository.create({
-            name, password:passwordHash
-        })
-        return this.userRepository.save(newUser)
+            name,
+            password: passwordHash,
+        });
+        return this.userRepository.save(newUser);
     }
-
 }
