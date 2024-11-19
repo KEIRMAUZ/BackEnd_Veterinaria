@@ -16,7 +16,7 @@ export class AuthService {
     
         const passwordValid = await bcrypt.compare(password, user.password);
         if (!passwordValid) {
-            throw new UnauthorizedException("Credenciales inválidas. Verifica tu contraseña tu usuario es: " + user);
+            throw new UnauthorizedException(`Credenciales inválidas. Verifica tu contraseña. Tu usuario es: ${user.name}`);
         }
     
         const payload = { sub: user.id_user, username: user.name };
