@@ -9,6 +9,9 @@ export class AuthService {
 
     async signIn(name: string, password: string): Promise<{ access_token: string }> {
         const user = await this.userService.buscarUsuario(name);
+        if(user.name !== name){
+            throw new UnauthorizedException("Usuario invalido");
+        }
     
         const passwordValid = await bcrypt.compare(password, user.password);
         if (!passwordValid) {
