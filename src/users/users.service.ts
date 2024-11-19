@@ -9,17 +9,10 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
     constructor( @InjectRepository(User) private userRepository: Repository<User>){}
 
-    async buscarUsuario(name:string){
-        const user = await this.userRepository.findOne({
-            where:{
-                name
-            }
-        })
-        if(!user){
-            throw new HttpException("Usuario no encontrado en la base de datos", HttpStatus.NOT_FOUND)
-        }
-
-        return user
+    async buscarUsuario(name: string) {
+        return await this.userRepository.findOne({
+            where: { name },
+        });
     }
     
     async buscarUsuarios(){
