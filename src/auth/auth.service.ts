@@ -11,19 +11,18 @@ export class AuthService {
         const user = await this.userService.buscarUsuario(name);
     
         if (!user) {
-            throw new UnauthorizedException("Credenciales invalidadas verifica tu usuario "+  user);
+            throw new UnauthorizedException("Credenciales inválidas. Verifica tu usuario");
         }
-
-        const passwordValid = await bcrypt.compare(password, user.password)
-        if(!passwordValid){
-            throw new UnauthorizedException("Verifica tu contraseña:" + passwordValid)
+    
+        const passwordValid = await bcrypt.compare(password, user.password);
+        if (!passwordValid) {
+            throw new UnauthorizedException("Credenciales inválidas. Verifica tu contraseña");
         }
     
         const payload = { sub: user.id_user, username: user.name };
-    
         return {
             access_token: await this.jwtService.signAsync(payload),
         };
-
     }
+    
 }
