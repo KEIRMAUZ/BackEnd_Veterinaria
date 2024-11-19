@@ -25,7 +25,7 @@ export class Mascotas{
     @Column()
     id_cliente:number
 
-    @ManyToOne(() => Clientes, (cliente) => cliente.mascota)
+    @ManyToOne(() => Clientes, (cliente) => cliente.mascota, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'id_cliente' })
     cliente: Clientes;
 
