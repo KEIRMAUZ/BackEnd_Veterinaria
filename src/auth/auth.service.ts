@@ -11,12 +11,12 @@ export class AuthService {
         const user = await this.userService.buscarUsuario(name);
     
         if (!user) {
-            throw new UnauthorizedException("Credenciales invalidadas verifica tu usuario");
+            throw new UnauthorizedException("Credenciales invalidadas verifica tu usuario "+  user);
         }
 
         const passwordValid = await bcrypt.compare(password, user.password)
         if(!passwordValid){
-            throw new UnauthorizedException("Verifica tu contraseña")
+            throw new UnauthorizedException("Verifica tu contraseña:" + passwordValid)
         }
     
         const payload = { sub: user.id_user, username: user.name };
