@@ -7,9 +7,9 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
     constructor ( private userService:UsersService, private jwtService: JwtService){}
 
-    async signIn(name: string, password: string): Promise<{ access_token: string }> {
-        const user = await this.userService.buscarUsuario(name);
-        if(user.name !== name){
+   async signIn(nameEnviado: string, password: string): Promise<{ access_token: string }> {
+        const user = await this.userService.buscarUsuario(nameEnviado);
+        if(user.name != nameEnviado){
             throw new UnauthorizedException(`Usuario invalido el usuario que intenta ingresar es: ${user.name}`);
         }
     
