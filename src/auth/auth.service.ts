@@ -9,7 +9,7 @@ export class AuthService {
 
     async signIn(nameEnviado: string, password: string): Promise<{ access_token: string }> {
         const user = await this.userService.buscarUsuario(nameEnviado);
-         if(nameEnviado == undefined){
+        if(user.name == undefined){
             throw new UnauthorizedException(`Usuario invalido el usuario que intenta ingresar es: ${user.name}`);
         }
     
@@ -25,4 +25,3 @@ export class AuthService {
     }
     
 }
-
