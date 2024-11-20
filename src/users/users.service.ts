@@ -10,12 +10,10 @@ export class UsersService {
     constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
             async buscarUsuario(name: string): Promise<User> {
-        console.log(`Buscando usuario con name: ${name}`);
+        console.log(`Buscando usuario con nombre: ${name}`);
         const user = await this.userRepository.findOne({
             where: { name },
         });
-
-        console.log('Resultado de la búsqueda:', user); 
 
         if (!user) {
             throw new UnauthorizedException("El usuario no existe");
