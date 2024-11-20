@@ -11,7 +11,9 @@ export class UsersService {
 
     async buscarUsuario(name: string): Promise<User> {
         const user = await this.userRepository.findOne({
-            where: { name },
+            where: { 
+                name 
+            },
         });
     
         if (!user) {
@@ -19,6 +21,22 @@ export class UsersService {
         }
     
         return user;
+    }
+
+    async buscarUsuarioNombre(name: string){
+        const user = await this.userRepository.findOne({
+            where: { 
+                name 
+            },
+        });
+    
+        if (!user) {
+            throw new UnauthorizedException("El usuario no existe");
+        }
+
+        const nameUser = user.name
+    
+        return nameUser;
     }
 
     async buscarUsuarios() {
