@@ -10,34 +10,19 @@ export class UsersService {
     constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
     async buscarUsuario(name: string): Promise<User> {
-        const user = await this.userRepository.findOne({
-            where: { 
-                name 
-            },
-        });
-    
-        if (!user) {
-            throw new UnauthorizedException("El usuario no existe");
-        }
-    
-        return user;
-    }
+  console.log(`Buscando usuario con name: ${name}`);
+  const user = await this.userRepository.findOne({
+    where: { name },
+  });
 
-    async buscarUsuarioNombre(name: string){
-        const user = await this.userRepository.findOne({
-            where: { 
-                name 
-            },
-        });
-    
-        if (!user) {
-            throw new UnauthorizedException("El usuario no existe");
-        }
+  console.log('Resultado de la búsqueda:', user); 
 
-        const nameUser = user.name
-    
-        return nameUser;
-    }
+  if (!user) {
+    throw new UnauthorizedException("El usuario no existe");
+  }
+
+  return user;
+}
 
     async buscarUsuarios() {
         return this.userRepository.find();
