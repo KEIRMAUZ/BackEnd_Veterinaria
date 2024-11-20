@@ -8,14 +8,12 @@ export class AuthService {
     constructor ( private userService:UsersService, private jwtService: JwtService){}
 
     async signIn(nameEnviado: string, password: string): Promise<{ access_token: string }> {
-        const userName = await this.userService.buscarUsuarioNombre(nameEnviado);
-        if(userName != nameEnviado){
-            throw new UnauthorizedException(`Usuario invalido el usuario que intenta ingresar es: ${nameEnviado} usuario`);
+        const user = await this.userService.buscarUsuario(nameEnviado);
+        if(user.name == undefined){
+            throw new UnauthorizedException(`Usuario invalido el usuario que intenta ingresar es: ${user.name}`);
         }
-
-        if(userName){
-            const user = await this.userService.buscarUsuario(userName);
-            const passwordValid = await bcrypt.compare(password, user.password);
+    
+        const passwordValid = await bcrypt.compare(password, user.password);
         if (!passwordValid) {
             throw new UnauthorizedException(`Tu usuario es: ${user.name} y tu contraseña es: ${user.password}`);
         }
@@ -24,9 +22,7 @@ export class AuthService {
         return {
             access_token: await this.jwtService.signAsync(payload),
         };
-        }
-    
-        
     }
     
 }
+
