@@ -23,11 +23,11 @@ export class Servicios {
     @Column({type:'datetime', default: () => 'CURRENT_TIMESTAMP' })
     fecha:Date
 
-    @ManyToOne(() => Mascotas, (mascota) => mascota.servicio)
+    @ManyToOne(() => Mascotas, (mascota) => mascota.servicio, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'id_mascota' })
     mascota: Mascotas;
 
-    @ManyToOne(() => Clientes, (cliente) => cliente.servicio)
+    @ManyToOne(() => Clientes, (cliente) => cliente.servicio, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'id_cliente' })
     cliente: Clientes;
 
