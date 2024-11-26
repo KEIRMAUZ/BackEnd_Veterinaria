@@ -29,7 +29,7 @@ export class Mascotas{
     @JoinColumn({ name: 'id_cliente' })
     cliente: Clientes;
 
-    @OneToMany(() => Servicios, (servicio) => servicio.mascota)
+    @OneToMany(() => Servicios, (servicio) => servicio.mascota , { onDelete: 'CASCADE' })
     servicio: Servicios[];
     
 }
